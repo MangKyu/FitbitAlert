@@ -1,3 +1,10 @@
 <resources>
+    <!-- Global App -->
     <string name="app_name">FitbitAlert</string>
+    <string name="app_desc">Heart Rate Tracking</string>
+
+    <!-- Main -->
+    <string name="heartrate_icon_desc">Heart Rate icon</string>
+    <string name="start_tracking_btn">Start Tracking</string>
+
 </resources>
