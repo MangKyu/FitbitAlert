@@ -3,7 +3,7 @@ package com.fitbitalert.DI.Module;
 import com.fitbitalert.Network.Helper.NetworkHelper;
 import com.fitbitalert.Network.Retrofit.RetrofitClient;
 import com.fitbitalert.Network.Retrofit.RetrofitService;
-import com.fitbitalert.Utils.Rx.AppRxScheduler;
+import com.fitbitalert.Network.Rx.AppRxScheduler;
 
 import javax.inject.Singleton;
 
