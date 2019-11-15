@@ -35,6 +35,8 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
      */
     public abstract @LayoutRes int getLayoutId();
 
+    public abstract void initView();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         performDependencyInjection();
