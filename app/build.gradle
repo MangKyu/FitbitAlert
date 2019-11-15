@@ -24,15 +24,22 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+
+    // Temporary fix until alpha10
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
+    implementation "com.android.support:recyclerview-v7:$rootProject.ext.supportLibraryVersion"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
 
     // Dagger2
     implementation "com.google.dagger:dagger:$rootProject.ext.dagger2Version"
@@ -53,4 +60,7 @@ dependencies {
     // lombok
     compileOnly "org.projectlombok:lombok:$rootProject.ext.lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$rootProject.ext.lombokVersion"
+
+    // RxBLE
+    implementation "com.polidea.rxandroidble2:rxandroidble:$rootProject.ext.rxBleVersion"
 }
