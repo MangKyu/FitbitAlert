@@ -1,7 +1,7 @@
 package com.fitbitalert.DI.Module;
 
-import com.fitbitalert.View.Main.MainActivity;
-import com.fitbitalert.View.Main.MainActivityModule;
+import com.fitbitalert.View.Scan.ScanActivity;
+import com.fitbitalert.View.Scan.ScanActivityModule;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -10,8 +10,8 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class ActivityModule {
 
     @ContributesAndroidInjector(modules = {
-            MainActivityModule.class
+            ScanActivityModule.class
     })
-    abstract MainActivity provideMainActivity();
+    abstract ScanActivity provideScanActivity();
 
 }
