@@ -2,12 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.fitbitalert.View.Main.MainActivity">
+    tools:context="com.fitbitalert.View.Scan.ScanActivity">
     <data>
         <import type="android.view.View"/>
         <variable
             name="viewModel"
-            type="com.fitbitalert.View.Main.MainViewModel"/>
+            type="com.fitbitalert.View.Scan.ScanViewModel"/>
     </data>
 
     <LinearLayout
@@ -35,12 +35,12 @@
 
         <!-- intro logo -->
         <LinearLayout
-            android:id="@+id/icon_ll"
+            android:id="@+id/main_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:layout_weight="0.4">
+            android:layout_weight="0.1">
 
         <TextView
             android:id="@+id/app_desc_tv"
@@ -50,27 +50,32 @@
             android:text="@string/app_desc"/>
 
         <ImageView
+            android:id="@+id/heartrate_iv"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:gravity="center"
-            android:id="@+id/heartrate_iv"
             app:srcCompat="@drawable/heartrate_icon"
-            app:layout_marginLeftPercent="20%"
-            app:layout_marginTopPercent="10%"
             android:contentDescription="@string/heartrate_icon_desc"/>
+
+            <Button
+                android:id="@+id/scan_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/colorBlue"
+                android:onClick="@{() -> viewModel.onScanClick()}"
+                android:text="@string/start_scan_btn"
+                android:textSize="17sp" />
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/tracking_btn"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/scan_result_rv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="5dp"
-            android:background="@color/colorBlue"
-            android:onClick="@{() -> viewModel.onTrackingClick()}"
-            android:text="@string/start_tracking_btn"
-            android:textSize="17sp" />
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            app:scan_adapter="@{viewModel.deviceObservableList}"/>
 
     </LinearLayout>
 
