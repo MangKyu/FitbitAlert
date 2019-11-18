@@ -6,6 +6,7 @@ import android.databinding.ObservableBoolean;
 import android.databinding.ObservableList;
 
 import com.fitbitalert.Common.BaseApplication;
+import com.fitbitalert.Utils.Logs.Dlog;
 import com.fitbitalert.Utils.Permission.LocationPermission;
 import com.fitbitalert.View.Base.BaseViewModel;
 import com.polidea.rxandroidble2.RxBleClient;
@@ -25,7 +26,7 @@ import lombok.Getter;
 public class ScanViewModel extends BaseViewModel<ScanNavigator> {
 
     private ObservableBoolean isScanning;
-    private final ObservableList<ScanResult> deviceObservableList = new ObservableArrayList<>();
+    public final ObservableList<ScanResult> deviceObservableList = new ObservableArrayList<>();
     private final MutableLiveData<List<ScanResult>> deviceLiveDataList = new MutableLiveData<>();
     @Inject
     RxBleClient rxBleClient;
@@ -42,12 +43,15 @@ public class ScanViewModel extends BaseViewModel<ScanNavigator> {
         } else {
             if (LocationPermission.isLocationPermissionGranted(getApplication().getApplicationContext())) {
                 scanBleDeviceList();
+            }else{
+                isScanning.set(true);
+                getNavigator().get().requestLocationPermission();
             }
         }
-        isScanning.set(!isScanning.get());
     }
 
-    private void scanBleDeviceList() {
+    public void scanBleDeviceList() {
+        rxBleClient = BaseApplication.getRxBleClient(getApplication());
         getCompositeDisposable().add(
                 rxBleClient.scanBleDevices(
                         new ScanSettings.Builder()
@@ -60,7 +64,7 @@ public class ScanViewModel extends BaseViewModel<ScanNavigator> {
                                 .build()
                 ).observeOn(getNetworkHelper().getScheduler().ui())
                         .doFinally(this::dispose)
-                        .subscribe(this::addDevice));
+                        .subscribe(this::addDevice, getNavigator().get()::onScanFailure));
     }
 
     private void dispose() {
@@ -69,6 +73,7 @@ public class ScanViewModel extends BaseViewModel<ScanNavigator> {
     }
 
     private void addDevice(ScanResult scanResult) {
+        Dlog.e(scanResult.getBleDevice().getMacAddress());
         for (int i = 0; i < deviceObservableList.size(); i++) {
             if (deviceObservableList.get(i).getBleDevice().equals(scanResult.getBleDevice())) {
                 deviceObservableList.set(i, scanResult);

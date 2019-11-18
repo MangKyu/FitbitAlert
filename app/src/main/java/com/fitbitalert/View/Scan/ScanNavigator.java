@@ -4,4 +4,5 @@ public interface ScanNavigator {
 
     void onScanFailure(Throwable throwable);
 
+    void requestLocationPermission();
 }

@@ -75,7 +75,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
-            app:scan_adapter="@{viewModel.deviceObservableList}"/>
+            app:scan_adapter="@{viewModel.deviceObservableList}"
+            android:orientation="vertical"/>
 
     </LinearLayout>
 

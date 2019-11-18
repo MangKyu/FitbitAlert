@@ -26,6 +26,7 @@ public class AppModule {
     }
 
     @Provides
+    @Singleton
     RxBleClient provideRxBleClient(BaseApplication baseApplication){
         RxBleClient rxBleClient = RxBleClient.create(baseApplication);
         RxBleClient.updateLogOptions(new LogOptions.Builder()
@@ -38,7 +39,7 @@ public class AppModule {
 
         RxJavaPlugins.setErrorHandler(throwable -> {
             if (throwable instanceof UndeliverableException && throwable.getCause() instanceof BleException) {
-                Dlog.v("Suppressed UndeliverableException: " + throwable.toString());
+                Dlog.e("Suppressed UndeliverableException: " + throwable.toString());
                 return; // ignore BleExceptions as they were surely delivered at least once
             }
             // add other custom handlers if needed

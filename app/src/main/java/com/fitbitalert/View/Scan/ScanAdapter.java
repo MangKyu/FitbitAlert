@@ -15,35 +15,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
+import lombok.Getter;
+
+@Getter
 public class ScanAdapter extends RecyclerView.Adapter<ScanAdapter.DeviceViewHolder> {
 
     private static final Comparator<ScanResult> SORTING_COMPARATOR = (lhs, rhs) ->
             lhs.getBleDevice().getMacAddress().compareTo(rhs.getBleDevice().getMacAddress());
     private final List<ScanResult> deviceList = new ArrayList<>();
-    private OnAdapterItemClickListener onAdapterItemClickListener;
-
-    private final View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (onAdapterItemClickListener != null) {
-                onAdapterItemClickListener.onAdapterViewClick(v);
-            }
-        }
-    };
-
-    void addScanResult(ScanResult bleScanResult) {
-        for (int i = 0; i < deviceList.size(); i++) {
-            if (deviceList.get(i).getBleDevice().equals(bleScanResult.getBleDevice())) {
-                deviceList.set(i, bleScanResult);
-                notifyItemChanged(i);
-                return;
-            }
-        }
-
-        deviceList.add(bleScanResult);
-        Collections.sort(deviceList, SORTING_COMPARATOR);
-        notifyDataSetChanged();
-    }
 
     public void clearItems() {
         deviceList.clear();
@@ -56,19 +35,26 @@ public class ScanAdapter extends RecyclerView.Adapter<ScanAdapter.DeviceViewHold
         notifyDataSetChanged();
     }
 
-    ScanResult getItemAtPosition(int childAdapterPosition) {
-        return deviceList.get(childAdapterPosition);
-    }
-
     @Override
     public int getItemCount() {
         return deviceList.size();
     }
 
+    // Override for duplicated bugs
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    // Override for duplicated bugs
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
     @Override
     public void onBindViewHolder(@NonNull DeviceViewHolder holder, int position) {
         holder.bind(deviceList.get(position));
-        holder.itemView.setOnClickListener(onClickListener);
     }
 
     @Override
@@ -76,14 +62,6 @@ public class ScanAdapter extends RecyclerView.Adapter<ScanAdapter.DeviceViewHold
     public DeviceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemDeviceBinding binding = ItemDeviceBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new DeviceViewHolder(binding);
-    }
-
-    void setOnAdapterItemClickListener(OnAdapterItemClickListener onAdapterItemClickListener) {
-        this.onAdapterItemClickListener = onAdapterItemClickListener;
-    }
-
-    interface OnAdapterItemClickListener {
-        void onAdapterViewClick(View view);
     }
 
     static class DeviceViewHolder extends RecyclerView.ViewHolder {
